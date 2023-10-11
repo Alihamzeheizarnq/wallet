@@ -5,20 +5,28 @@ namespace App\Http\Controllers\Api;
 use App\Enum\Payment\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentRequest;
+use App\Mail\notifyRejectedPayment;
 use App\Models\Payment;
+use App\Models\User;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class PaymentController extends Controller
 {
     use ApiResponse;
+
     public function index(): JsonResponse
     {
         $payments = Payment::latest()->paginate(20);
 
-        return $this->successResponse($payments);
+        return $this->successResponse(
+            $payments,
+            __('payment.messages.payment_list_found_successfully')
+        );
     }
+
     public function store(PaymentRequest $request): JsonResponse
     {
         $payment = Payment::create([
@@ -27,12 +35,18 @@ class PaymentController extends Controller
             'currency' => $request->currency
         ]);
 
-        return $this->successResponse($payment);
+        return $this->successResponse(
+            $payment,
+            __('payment.messages.payment_successfully_created')
+        );
     }
 
     public function show(Payment $payment): JsonResponse
     {
-        return $this->successResponse($payment);
+        return $this->successResponse(
+            $payment,
+            __('payment.messages.payment_successfully_found')
+        );
     }
 
     public function reject(Payment $payment): JsonResponse
@@ -48,6 +62,13 @@ class PaymentController extends Controller
         $payment->update([
             'status' => Status::REJECTED->value
         ]);
+
+        Mail::to(
+            User::find(1)
+        )->send(
+            new notifyRejectedPayment($payment)
+        );
+
 
         return $this->successResponse($payment);
     }
