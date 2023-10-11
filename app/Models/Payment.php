@@ -11,6 +11,9 @@ class Payment extends Model
 
     protected $guarded = ['id'];
 
+    /**
+     * @throws \Exception
+     */
     public static function generateUniqueNumber($length = 20): int
     {
         $uniqueNumber = str_shuffle(time() . random_int(111111111 , 999999999));
@@ -27,8 +30,8 @@ class Payment extends Model
 
     protected static function booted()
     {
-        static::creating(function ($user) {
-            $user->unique_id = static::generateUniqueNumber(10);
+        static::creating(function ($payment) {
+            $payment->unique_id = static::generateUniqueNumber(10);
         });
     }
 }

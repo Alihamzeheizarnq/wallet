@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Enum\Payment\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentRequest;
+use App\Http\Resources\PaymentCollection;
+use App\Http\Resources\PaymentResource;
 use App\Mail\notifyRejectedPayment;
 use App\Models\Payment;
 use App\Models\User;
@@ -22,7 +24,7 @@ class PaymentController extends Controller
         $payments = Payment::latest()->paginate(20);
 
         return $this->successResponse(
-            $payments,
+            new PaymentCollection($payments),
             __('payment.messages.payment_list_found_successfully')
         );
     }
@@ -44,7 +46,7 @@ class PaymentController extends Controller
     public function show(Payment $payment): JsonResponse
     {
         return $this->successResponse(
-            $payment,
+            new PaymentResource($payment),
             __('payment.messages.payment_successfully_found')
         );
     }
