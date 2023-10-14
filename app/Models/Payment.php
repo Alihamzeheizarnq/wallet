@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Payment extends Model
 {
@@ -26,6 +27,16 @@ class Payment extends Model
 
 
         return $randomDigitNumber;
+    }
+
+    /**
+     * transaction
+     *
+     * @return HasOne
+     */
+    public function transaction(): HasOne
+    {
+        return $this->hasOne(Transaction::class);
     }
 
     protected static function booted()

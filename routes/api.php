@@ -23,3 +23,4 @@ Route::get('payments', [PaymentController::class, 'index']);
 Route::get('payments/{payment:unique_id}', [PaymentController::class, 'show']);
 Route::post('payments', [PaymentController::class, 'store']);
 Route::patch('payments/{payment:unique_id}/reject', [PaymentController::class, 'reject']);
+Route::patch('payments/{payment:unique_id}/approved', [PaymentController::class, 'approved']);

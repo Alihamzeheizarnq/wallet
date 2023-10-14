@@ -14,9 +14,6 @@ class PaymentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            'id' => $this->id,
-            'price' => $this->amount
-        ];
+        return parent::toArray($request);
     }
 }

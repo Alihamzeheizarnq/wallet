@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Enum\Payment\Status;
+use App\Events\PaymentApprovedEvent;
+use App\Events\PaymentRejectedEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentRequest;
 use App\Http\Resources\PaymentCollection;
 use App\Http\Resources\PaymentResource;
 use App\Mail\notifyRejectedPayment;
 use App\Models\Payment;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Traits\ApiResponse;
+use Illuminate\Contracts\Support\ValidatedData;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -65,12 +69,39 @@ class PaymentController extends Controller
             'status' => Status::REJECTED->value
         ]);
 
-        Mail::to(
-            User::find(1)
-        )->send(
-            new notifyRejectedPayment($payment)
-        );
+        PaymentRejectedEvent::dispatch($payment);
 
+        return $this->successResponse($payment);
+    }
+
+    /**
+     * approved
+     *
+     * @param Payment $payment
+     * @return JsonResponse
+     */
+    public function approved(Payment $payment): JsonResponse
+    {
+        if ($payment->status !== Status::PENDING->value) {
+            throw new BadRequestException('Payment status should be pending');
+        }
+
+        if ($payment->transaction) {
+            throw new BadRequestException('There is a transaction for this payment');
+        }
+
+        $payment->update([
+            'status' => Status::APPROVED->value
+        ]);
+
+        $payment->transaction()->create([
+            'user_id' => 1,
+            'amount' => $payment->amount,
+            'currency' => $payment->currency,
+            'balance' => Transaction::where('user_id', 1)->sum('amount'),
+        ]);
+
+        PaymentApprovedEvent::dispatch($payment);
 
         return $this->successResponse($payment);
     }
