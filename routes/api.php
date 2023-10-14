@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PaymentController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,12 +15,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+    $router->post('login', [AuthController::class, 'login']);
+    $router->post('register', [AuthController::class, 'register']);
+    $router->post('logout', [PaymentController::class, 'logout']);
+    $router->post('refresh', [PaymentController::class, 'index']);
+    $router->post('me', [PaymentController::class, 'index']);
 });
 
-Route::get('payments', [PaymentController::class, 'index']);
-Route::get('payments/{payment:unique_id}', [PaymentController::class, 'show']);
-Route::post('payments', [PaymentController::class, 'store']);
-Route::patch('payments/{payment:unique_id}/reject', [PaymentController::class, 'reject']);
-Route::patch('payments/{payment:unique_id}/approved', [PaymentController::class, 'approved']);
+
+Route::group([
+    'middleware' => ['api' , 'auth'],
+], function ($router) {
+    $router->get('payments', [PaymentController::class, 'index']);
+    $router->get('payments/{payment:unique_id}', [PaymentController::class, 'show']);
+    $router->post('payments', [PaymentController::class, 'store']);
+    $router->patch('payments/{payment:unique_id}/reject', [PaymentController::class, 'reject']);
+    $router->patch('payments/{payment:unique_id}/approved', [PaymentController::class, 'approved']);
+});

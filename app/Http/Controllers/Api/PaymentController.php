@@ -36,7 +36,7 @@ class PaymentController extends Controller
     public function store(PaymentRequest $request): JsonResponse
     {
         $payment = Payment::create([
-            'user_id' => 1,
+            'user_id' => auth()->user()->id,
             'amount' => $request->amount,
             'currency' => $request->currency
         ]);
@@ -95,10 +95,10 @@ class PaymentController extends Controller
         ]);
 
         $payment->transaction()->create([
-            'user_id' => 1,
+            'user_id' => auth()->user()->id,
             'amount' => $payment->amount,
             'currency' => $payment->currency,
-            'balance' => Transaction::where('user_id', 1)->sum('amount'),
+            'balance' => Transaction::where('user_id', auth()->user()->id)->sum('amount'),
         ]);
 
         PaymentApprovedEvent::dispatch($payment);

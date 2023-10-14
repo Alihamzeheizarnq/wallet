@@ -25,7 +25,7 @@ class RejectedPaymentEmail implements ShouldQueue
     public function handle(PaymentRejectedEvent $event): void
     {
         Mail::to(
-            User::find(1)
+            User::find($event->payment->user_id)
         )->send(
             new notifyRejectedPayment($event->payment)
         );
