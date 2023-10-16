@@ -21,9 +21,9 @@ Route::group([
 ], function ($router) {
     $router->post('login', [AuthController::class, 'login']);
     $router->post('register', [AuthController::class, 'register']);
-    $router->post('logout', [PaymentController::class, 'logout']);
-    $router->post('refresh', [PaymentController::class, 'index']);
-    $router->post('me', [PaymentController::class, 'index']);
+    $router->post('logout', [AuthController::class, 'logout']);
+    $router->post('refresh', [AuthController::class, 'refresh']);
+    $router->post('me', [AuthController::class, 'me']);
 });
 
 

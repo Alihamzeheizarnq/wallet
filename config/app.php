@@ -159,7 +159,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+        \App\Providers\GlobalModelEventListener::class,
         /*
          * Application Service Providers...
          */
