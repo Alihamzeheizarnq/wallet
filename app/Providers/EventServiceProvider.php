@@ -6,6 +6,7 @@ use App\Events\PaymentApprovedEvent;
 use App\Events\PaymentRejectedEvent;
 use App\Listeners\ApprovedPaymentEmail;
 use App\Listeners\RejectedPaymentEmail;
+use App\Listeners\UpdateUserBlanace;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -26,7 +27,8 @@ class EventServiceProvider extends ServiceProvider
             RejectedPaymentEmail::class
         ],
         PaymentApprovedEvent::class => [
-            ApprovedPaymentEmail::class
+            ApprovedPaymentEmail::class,
+            UpdateUserBlanace::class
         ]
     ];
 

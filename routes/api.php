@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\CurrencyController;
+use App\Http\Controllers\Api\DepositController;
+use App\Http\Controllers\Api\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,4 +42,6 @@ Route::group([
     $router->patch('currencies/{currency}/deactivate', [CurrencyController::class , 'deactivate']);
     $router->patch('currencies/{currency}/activate', [CurrencyController::class , 'activate']);
     $router->apiResource('currencies', CurrencyController::class);
+
+    $router->post('deposit', [DepositController::class , 'deposit']);
 });

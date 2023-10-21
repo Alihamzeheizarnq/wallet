@@ -94,11 +94,14 @@ class PaymentController extends Controller
             'status' => Status::APPROVED->value
         ]);
 
+        $amount = Transaction::where('user_id', auth()->user()->id)
+                ->sum('amount') + $payment->amount;
+
         $payment->transaction()->create([
             'user_id' => auth()->user()->id,
             'amount' => $payment->amount,
-            'currency' => $payment->currency,
-            'balance' => Transaction::where('user_id', auth()->user()->id)->sum('amount'),
+            'currency' => $payment->currency_id,
+            'balance' => $amount,
         ]);
 
         PaymentApprovedEvent::dispatch($payment);

@@ -4,8 +4,11 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -22,6 +25,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'balance'
     ];
 
     /**
@@ -64,5 +68,25 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function updateBalance(): Collection
+    {
+        $totalAmount = $this->transactions()
+            ->select('currency', DB::raw('SUM(amount) as total_amount'))
+            ->groupBy('currency')
+            ->pluck('total_amount', 'currency');
+
+        $this->update([
+            'balance' => json_encode($totalAmount->jsonSerialize())
+        ]);
+
+
+        return $totalAmount;
     }
 }

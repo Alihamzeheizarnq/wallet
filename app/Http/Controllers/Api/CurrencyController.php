@@ -23,7 +23,7 @@ class CurrencyController extends Controller
 
         return $this->successResponse(
             $currencies,
-            __('payment.messages.payment_list_found_successfully')
+            __('currency.messages.currency_list_found_successfully')
         );
     }
 
@@ -44,7 +44,7 @@ class CurrencyController extends Controller
 
         return $this->successResponse(
             $currency,
-            __('payment.messages.payment_successfully_created')
+            __('currency.messages.currency_successfully_created')
         );
     }
 
@@ -58,7 +58,7 @@ class CurrencyController extends Controller
     {
         return $this->successResponse(
             $currency,
-            __('payment.messages.payment_successfully_found')
+            __('currency.messages.currency_successfully_found')
         );
     }
 
@@ -76,7 +76,7 @@ class CurrencyController extends Controller
 
         return $this->successResponse(
             $currency,
-            __('payment.messages.payment_successfully_found')
+            __('currency.messages.currency_successfully_found')
         );
     }
 
@@ -94,7 +94,7 @@ class CurrencyController extends Controller
 
         return $this->successResponse(
             $currency,
-            __('payment.messages.payment_successfully_found')
+            __('currency.messages.currency_successfully_found')
         );
     }
 }
