@@ -2,12 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Enum\Payment\PaymentMethod;
-use App\Enum\Payment\Status;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Enum;
 
-class PaymentRequest extends FormRequest
+class CurrencyCreatedRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +21,9 @@ class PaymentRequest extends FormRequest
      */
     public function rules(): array
     {
-
         return [
-            'amount' => ['required', 'numeric'],
-            'currency_id' => ['required' , 'exists:currencies,id'],
+            'abbr' => ['required', 'string', 'max:255'],
+            'symbol' => ['required', 'string', 'max:255']
         ];
     }
 }

@@ -12,13 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('payments', function (Blueprint $table) {
-            $table->unsignedBigInteger('status_updated_by')->nullable();
-            $table->timestamp('status_updated_at')->nullable();
-
-            $table->foreign('status_updated_by')
+            $table->unsignedBigInteger('currency_id')->change();
+            $table->foreign('currency_id')
                 ->references('id')
-                ->on('users')
-                ->onDelete('set null');
+                ->on('currencies')
+                ->onDelete('cascade');
         });
     }
 
@@ -30,10 +28,7 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::table('payments', function (Blueprint $table) {
-            $table->dropColumn(
-                'status_updated_by',
-                'status_updated_at'
-            );
+            $table->string('currency_id')->nullable()->change();
         });
 
         Schema::enableForeignKeyConstraints();

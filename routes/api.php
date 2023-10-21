@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\CurrencyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,4 +36,9 @@ Route::group([
     $router->post('payments', [PaymentController::class, 'store']);
     $router->patch('payments/{payment:unique_id}/reject', [PaymentController::class, 'reject']);
     $router->patch('payments/{payment:unique_id}/approved', [PaymentController::class, 'approved']);
+
+    // currency routes
+    $router->patch('currencies/{currency}/deactivate', [CurrencyController::class , 'deactivate']);
+    $router->patch('currencies/{currency}/activate', [CurrencyController::class , 'activate']);
+    $router->apiResource('currencies', CurrencyController::class);
 });

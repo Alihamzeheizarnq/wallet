@@ -38,7 +38,7 @@ class PaymentController extends Controller
         $payment = Payment::create([
             'user_id' => auth()->user()->id,
             'amount' => $request->amount,
-            'currency' => $request->currency
+            'currency_id' => $request->currency_id
         ]);
 
         return $this->successResponse(

@@ -11,11 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('payments', function (Blueprint $table) {
-            $table->unsignedBigInteger('status_updated_by')->nullable();
-            $table->timestamp('status_updated_at')->nullable();
+        Schema::create('currencies', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('abbr');
+            $table->string('symbol');
+            $table->boolean('is_active')->default(true);
+            $table->timestamps();
 
-            $table->foreign('status_updated_by')
+            $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('set null');
@@ -29,12 +34,7 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::table('payments', function (Blueprint $table) {
-            $table->dropColumn(
-                'status_updated_by',
-                'status_updated_at'
-            );
-        });
+        Schema::dropIfExists('currencies');
 
         Schema::enableForeignKeyConstraints();
     }
