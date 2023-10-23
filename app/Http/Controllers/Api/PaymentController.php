@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Traits\ApiResponse;
 use Illuminate\Contracts\Support\ValidatedData;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
@@ -35,6 +36,7 @@ class PaymentController extends Controller
 
     public function store(PaymentRequest $request): JsonResponse
     {
+        //TODO check the payment
         $payment = Payment::create([
             'user_id' => auth()->user()->id,
             'amount' => $request->amount,
@@ -57,11 +59,15 @@ class PaymentController extends Controller
 
     public function reject(Payment $payment): JsonResponse
     {
+
+        //TODO check only being pendding
         if ($payment->status === Status::APPROVED->value) {
+            //TODO read from trans
             throw new BadRequestException('this payment has already approved before');
         }
 
         if ($payment->status === Status::REJECTED->value) {
+            //TODO read from trans
             throw new BadRequestException('this payment has already rejected before');
         }
 
@@ -86,10 +92,13 @@ class PaymentController extends Controller
             throw new BadRequestException('Payment status should be pending');
         }
 
-        if ($payment->transaction) {
+        //TODO read the text from lang file
+        if ($payment->transaction()->exists()) {
             throw new BadRequestException('There is a transaction for this payment');
         }
 
+        DB::beginTransaction();
+        //TODO rename Status enum to Payment/PaymentStatusEnum
         $payment->update([
             'status' => Status::APPROVED->value
         ]);
@@ -103,6 +112,8 @@ class PaymentController extends Controller
             'currency_key' => $payment->currency_key,
             'balance' => $amount,
         ]);
+
+        DB::commit();
 
         PaymentApprovedEvent::dispatch($payment);
 

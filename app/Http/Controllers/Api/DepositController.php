@@ -31,8 +31,6 @@ class DepositController extends Controller
             throw new BadRequestException('amount must be smaller than your balance');
         }
 
-        sleep(60);
-
         $fromUser->transactions()->create([
             'user_id' => $fromUser->id,
             'amount' => $request->amount * -1,

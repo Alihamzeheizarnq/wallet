@@ -35,8 +35,10 @@ Route::group([
     $router->get('payments', [PaymentController::class, 'index']);
     $router->get('payments/{payment:unique_id}', [PaymentController::class, 'show']);
     $router->post('payments', [PaymentController::class, 'store']);
+    //TODO move the route's binds into the model
     $router->patch('payments/{payment:unique_id}/reject', [PaymentController::class, 'reject']);
-    $router->patch('payments/{payment:unique_id}/approved', [PaymentController::class, 'approved']);
+    //TODO change the routes
+    $router->patch('payments/{payment:unique_id}/approve', [PaymentController::class, 'approved']);
 
     // currency routes
     $router->patch('currencies/{currency}/deactivate', [CurrencyController::class , 'deactivate']);
@@ -44,5 +46,4 @@ Route::group([
     $router->apiResource('currencies', CurrencyController::class);
 
     $router->post('deposit', [DepositController::class , 'deposit']);
-    $router->post('deposit2', [DepositController::class , 'deposit2']);
 });
