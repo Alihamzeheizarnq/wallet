@@ -38,7 +38,7 @@ class PaymentController extends Controller
         $payment = Payment::create([
             'user_id' => auth()->user()->id,
             'amount' => $request->amount,
-            'currency_id' => $request->currency_id
+            'currency_key' => $request->currency_key
         ]);
 
         return $this->successResponse(
@@ -100,7 +100,7 @@ class PaymentController extends Controller
         $payment->transaction()->create([
             'user_id' => auth()->user()->id,
             'amount' => $payment->amount,
-            'currency' => $payment->currency_id,
+            'currency_key' => $payment->currency_key,
             'balance' => $amount,
         ]);
 

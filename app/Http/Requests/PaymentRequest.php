@@ -27,7 +27,7 @@ class PaymentRequest extends FormRequest
 
         return [
             'amount' => ['required', 'numeric'],
-            'currency_id' => ['required' , 'exists:currencies,id'],
+            'currency_key' => ['required' , 'exists:currencies,key'],
         ];
     }
 }

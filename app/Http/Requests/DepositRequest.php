@@ -25,7 +25,7 @@ class DepositRequest extends FormRequest
             'from' => 'required|exists:users,id',
             'to' => 'required|different:from|exists:users,id',
             'amount' => 'required|numeric',
-            'currency_id' => 'required|exists:currencies,id'
+            'currency_key' => 'required|exists:currencies,key'
         ];
     }
 }

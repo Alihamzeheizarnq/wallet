@@ -89,4 +89,13 @@ class User extends Authenticatable implements JWTSubject
 
         return $totalAmount;
     }
+
+    public function getBalance(Currency $currency): int
+    {
+        $totalAmount = $this->transactions()
+            ->where('currency_key' , $currency->key)
+            ->sum('amount');
+
+        return $totalAmount;
+    }
 }

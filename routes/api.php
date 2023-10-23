@@ -44,4 +44,5 @@ Route::group([
     $router->apiResource('currencies', CurrencyController::class);
 
     $router->post('deposit', [DepositController::class , 'deposit']);
+    $router->post('deposit2', [DepositController::class , 'deposit2']);
 });

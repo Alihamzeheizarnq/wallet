@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('payments', function (Blueprint $table) {
+        Schema::table('transactions', function (Blueprint $table) {
             $table->renameColumn('currency','currency_key');
             $table->foreign('currency_key')
                 ->references('key')
@@ -26,7 +26,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('payments', function (Blueprint $table) {
+        Schema::table('transactions', function (Blueprint $table) {
             $table->dropForeign(['currency_key']);
             $table->string('currency_key')->change();
             $table->renameColumn('currency_key','currency');

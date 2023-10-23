@@ -26,12 +26,12 @@ class GlobalModelEventListener extends ServiceProvider
             $model = array_shift($data);
             $modelName = strtolower(class_basename($model));
 
-            if ($modelName !== 'log') {
+            if ($modelName !== 'log' && !$this->app->runningInConsole()) {
                 Log::create([
                     'action' => 'saved',
                     'entity_type' => $modelName,
                     'entity_id' => $model->id,
-                    'user_id' => auth()->user()->id,
+                    'user_id' => auth()?->user()?->id ?? $model->user_id,
                     'after_changes' => json_encode($model->getAttributes()),
                     'before_changes' => '{}',
                 ]);

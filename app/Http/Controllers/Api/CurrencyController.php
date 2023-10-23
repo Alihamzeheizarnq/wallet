@@ -54,8 +54,14 @@ class CurrencyController extends Controller
      * @param Currency $currency
      * @return JsonResponse
      */
-    public function show(Currency $currency): JsonResponse
+    public function desposit(Currency $currency): JsonResponse
     {
+
+        $this->lockUser(1);
+        //insert
+        $this->unlock(1);
+
+
         return $this->successResponse(
             $currency,
             __('currency.messages.currency_successfully_found')
@@ -68,8 +74,16 @@ class CurrencyController extends Controller
      * @param Currency $currency
      * @return JsonResponse
      */
-    public function deactivate(Currency $currency): JsonResponse
+    public function approved(Currency $currency): JsonResponse
     {
+
+        $this->lockUser(1);
+
+        //insert
+
+        $this->unlock(1);
+
+
         $currency->update([
             'is_active' => false,
         ]);
