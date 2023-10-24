@@ -3,11 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Enum\Payment\PaymentMethod;
-use App\Enum\Payment\PaymentStatus;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Enum;
 
-class PaymentRequest extends FormRequest
+class StorePaymentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

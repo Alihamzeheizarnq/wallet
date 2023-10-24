@@ -104,6 +104,8 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * cureencies
+     *
      * @return HasMany
      */
     public function cureencies(): HasMany

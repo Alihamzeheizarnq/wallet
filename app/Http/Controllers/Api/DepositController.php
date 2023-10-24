@@ -7,13 +7,13 @@ use App\Http\Requests\DepositRequest;
 use App\Models\Currency;
 use App\Models\User;
 use App\Traits\ApiResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class DepositController extends Controller
 {
     use ApiResponse;
+
     public function deposit(DepositRequest $request)
     {
         DB::beginTransaction();
@@ -27,7 +27,7 @@ class DepositController extends Controller
 
         $balance = $fromUser->getBalance($currency);
 
-        if($request->amount > $balance){
+        if ($request->amount > $balance) {
             throw new BadRequestException('amount must be smaller than your balance');
         }
 
@@ -52,22 +52,5 @@ class DepositController extends Controller
         DB::commit();
 
         return $this->successResponse();
-
     }
-
-    public function deposit2(DepositRequest $request)
-    {
-        $fromUser = User::where('id', $request->from)->lockForUpdate()->first();
-
-        $fromUser->transactions()->create([
-            'user_id' => $fromUser->id,
-            'amount' => $request->amount * -1,
-            'currency_key' => $request->currency_key,
-            'balance' => $request->amount,
-        ]);
-
-        return $this->successResponse();
-
-    }
-
 }

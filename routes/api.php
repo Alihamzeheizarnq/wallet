@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
     'middleware' => 'api',
-    'prefix' => 'auth'
+    'prefix' => 'auth',
 ], function ($router) {
     $router->post('login', [AuthController::class, 'login']);
     $router->post('register', [AuthController::class, 'register']);
@@ -30,18 +30,19 @@ Route::group([
 
 
 Route::group([
-    'middleware' => ['api' , 'auth'],
+    'middleware' => ['api', 'auth'],
 ], function ($router) {
     $router->get('payments', [PaymentController::class, 'index']);
     $router->get('payments/{payment}', [PaymentController::class, 'show']);
+    $router->delete('payments/{payment}', [PaymentController::class, 'destroy']);
     $router->post('payments', [PaymentController::class, 'store']);
     $router->patch('payments/{payment}/reject', [PaymentController::class, 'reject']);
     $router->patch('payments/{payment}/approve', [PaymentController::class, 'approve']);
 
     // currency routes
-    $router->patch('currencies/{currency}/deactivate', [CurrencyController::class , 'deactivate']);
-    $router->patch('currencies/{currency}/activate', [CurrencyController::class , 'activate']);
+    $router->patch('currencies/{currency}/deactivate', [CurrencyController::class, 'deactivate']);
+    $router->patch('currencies/{currency}/activate', [CurrencyController::class, 'activate']);
     $router->apiResource('currencies', CurrencyController::class);
 
-    $router->post('deposit', [DepositController::class , 'deposit']);
+    $router->post('deposit', [DepositController::class, 'deposit']);
 });

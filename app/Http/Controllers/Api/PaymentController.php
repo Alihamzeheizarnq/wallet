@@ -6,7 +6,7 @@ use App\Enum\Payment\PaymentStatus;
 use App\Events\PaymentApprovedEvent;
 use App\Events\PaymentRejectedEvent;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PaymentRequest;
+use App\Http\Requests\StorePaymentRequest;
 use App\Http\Resources\PaymentCollection;
 use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
@@ -34,10 +34,10 @@ class PaymentController extends Controller
     /**
      * store
      *
-     * @param PaymentRequest $request
+     * @param StorePaymentRequest $request
      * @return JsonResponse
      */
-    public function store(PaymentRequest $request): JsonResponse
+    public function store(StorePaymentRequest $request): JsonResponse
     {
         $hasPayment = $request->user()
             ->payments()
@@ -132,6 +132,25 @@ class PaymentController extends Controller
 
         return apiResponse()
             ->data($payment)
+            ->send();
+    }
+
+    /**
+     * destroy
+     *
+     * @param Payment $payment
+     * @return JsonResponse
+     */
+    public function destroy(Payment $payment): JsonResponse
+    {
+        if ($payment->status !== PaymentStatus::PENDING) {
+            throw new BadRequestException('payment request should be pending');
+        }
+
+        $payment->delete();
+
+        return apiResponse()
+            ->message('payment deleted successfully')
             ->send();
     }
 }
