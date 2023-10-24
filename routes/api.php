@@ -33,12 +33,10 @@ Route::group([
     'middleware' => ['api' , 'auth'],
 ], function ($router) {
     $router->get('payments', [PaymentController::class, 'index']);
-    $router->get('payments/{payment:unique_id}', [PaymentController::class, 'show']);
+    $router->get('payments/{payment}', [PaymentController::class, 'show']);
     $router->post('payments', [PaymentController::class, 'store']);
-    //TODO move the route's binds into the model
-    $router->patch('payments/{payment:unique_id}/reject', [PaymentController::class, 'reject']);
-    //TODO change the routes
-    $router->patch('payments/{payment:unique_id}/approve', [PaymentController::class, 'approved']);
+    $router->patch('payments/{payment}/reject', [PaymentController::class, 'reject']);
+    $router->patch('payments/{payment}/approve', [PaymentController::class, 'approve']);
 
     // currency routes
     $router->patch('currencies/{currency}/deactivate', [CurrencyController::class , 'deactivate']);

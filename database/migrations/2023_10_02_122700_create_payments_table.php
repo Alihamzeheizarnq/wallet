@@ -1,6 +1,6 @@
 <?php
 
-use App\Enum\Payment\Status;
+use App\Enum\Payment\PaymentStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->double('amount');
-            $table->string('status')->default(Status::PENDING->value);
+            $table->string('status')->default(PaymentStatus::PENDING->value);
             $table->string('currency')->nullable();
 
             $table->timestamps();

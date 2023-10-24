@@ -2,11 +2,11 @@
 
 namespace App\Enum\Payment;
 
-enum Status: string
+enum PaymentStatus: string
 {
-    case PENDING = 'Pending';
+    case PENDING = 'pending';
     case APPROVED = 'approved';
-    case REJECTED = 'Rejected';
+    case REJECTED = 'rejected';
 
 
     public function translate(){

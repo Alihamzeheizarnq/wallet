@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enum\Payment\PaymentMethod;
-use App\Enum\Payment\Status;
+use App\Enum\Payment\PaymentStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 

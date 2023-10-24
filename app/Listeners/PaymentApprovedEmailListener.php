@@ -6,7 +6,7 @@ use App\Events\PaymentApprovedEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class ApprovedPaymentEmail
+class PaymentApprovedEmailListener
 {
     /**
      * Create the event listener.

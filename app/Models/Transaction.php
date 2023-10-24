@@ -13,6 +13,6 @@ class Transaction extends Model
     protected $guarded = ['id'];
     public function payment(): BelongsTo
     {
-        return $this->belongsTo(Payment::class);
+        return $this->belongsTo(Payment::class , 'key' , 'currency_key');
     }
 }

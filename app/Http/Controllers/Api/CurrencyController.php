@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\CurrencyActivatedEvent;
+use App\Events\CurrencyDeactivatedEvent;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CurrencyCreatedRequest;
+use App\Http\Requests\StoreCurrencyRequest;
 use App\Models\Currency;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-//TODO swagger docs must be completed
 class CurrencyController extends Controller
 {
     use ApiResponse;
@@ -20,38 +22,35 @@ class CurrencyController extends Controller
      */
     public function index(): JsonResponse
     {
-        //TODO keep it into boot as isActive
-        $currencies = Currency::where('is_active',true)->latest()->paginate(20);
+        $currencies = Currency::isActive()->latest()->paginate(20);
 
-        //TODO make it into a service
-        return $this->successResponse(
-            $currencies,
-            __('currency.messages.currency_list_found_successfully')
-        );
+        return apiResponse()
+            ->data($currencies)
+            ->message(__('currency.messages.currency_list_found_successfully'))
+            ->send();
     }
 
     /**
      * store
      *
-     * @param CurrencyCreatedRequest $request
+     * @param StoreCurrencyRequest $request
      * @return JsonResponse
      */
-    public function store(CurrencyCreatedRequest $request): JsonResponse
+    public function store(StoreCurrencyRequest $request): JsonResponse
     {
-        //TODO rename CurrencyCreatedRequest to StoreCurrencyRequest
+        $currency = $request->user()
+            ->currencies()
+            ->create([
+                'name' => $request->name,
+                'key' => $request->key,
+                'iso_code' => $request->iso_code,
+                'symbol' => $request->symbol,
+            ]);
 
-        $currency = Currency::create([
-            'user_id' => auth()->user()->id,
-            'name' => $request->name,
-            //TODO rename abbr to iso_code
-            'abbr' => $request->abbr,
-            'symbol' => $request->symbol
-        ]);
-
-        return $this->successResponse(
-            $currency,
-            __('currency.messages.currency_successfully_created')
-        );
+        return apiResponse()
+            ->data($currency)
+            ->message(__('currency.messages.currency_successfully_created'))
+            ->send();
     }
 
     /**
@@ -62,18 +61,43 @@ class CurrencyController extends Controller
      */
     public function activate(Currency $currency): JsonResponse
     {
-        //TODO leave a bad request error if $currency is active before
+        if ($currency->is_active){
+            throw new BadRequestException('it is active');
+        }
+
         $currency->update([
             'is_active' => true,
         ]);
 
-        //TODO leave a event class, it will be called when it became active
+        CurrencyActivatedEvent::dispatch($currency);
 
-        return $this->successResponse(
-            $currency,
-            __('currency.messages.currency_successfully_found')
-        );
+        return apiResponse()
+            ->data($currency)
+            ->message(__('currency.messages.currency_successfully_found'))
+            ->send();
     }
 
-    //TODO the deactivate action must be completed
+    /**
+     * deactivate
+     *
+     * @param Currency $currency
+     * @return JsonResponse
+     */
+    public function deactivate(Currency $currency): JsonResponse
+    {
+        if (!$currency->is_active){
+            throw new BadRequestException('it is deactivate');
+        }
+
+        $currency->update([
+            'is_active' => false,
+        ]);
+
+        CurrencyDeactivatedEvent::dispatch($currency);
+
+        return apiResponse()
+            ->data($currency)
+            ->message(__('currency.messages.currency_successfully_found'))
+            ->send();
+    }
 }

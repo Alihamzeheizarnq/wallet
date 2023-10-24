@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('key')->unique();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->string('abbr');
+            $table->string('iso_code');
             $table->string('symbol');
             $table->boolean('is_active')->default(true);
             $table->timestamps();

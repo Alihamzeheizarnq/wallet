@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->string('action');
             $table->nullableMorphs('entity');
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->json('before_changes')->default('{}');
-            $table->json('after_changes')->default('{}');
+            $table->json('before_changes')->nullable();
+            $table->json('after_changes')->nullable();
 
             $table->index(['action', 'entity_type', 'entity_id']);
 

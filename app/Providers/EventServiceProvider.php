@@ -4,9 +4,9 @@ namespace App\Providers;
 
 use App\Events\PaymentApprovedEvent;
 use App\Events\PaymentRejectedEvent;
-use App\Listeners\ApprovedPaymentEmail;
-use App\Listeners\RejectedPaymentEmail;
-use App\Listeners\UpdateUserBlanace;
+use App\Listeners\PaymentApprovedEmailListener;
+use App\Listeners\RejectedPaymentEmailListener;
+use App\Listeners\UpdateUserBalanceListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -19,18 +19,17 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array<class-string, array<int, class-string>>
      */
-    //TODO rename the name of events and listeners
 
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
         PaymentRejectedEvent::class => [
-            RejectedPaymentEmail::class
+            RejectedPaymentEmailListener::class
         ],
         PaymentApprovedEvent::class => [
-            ApprovedPaymentEmail::class,
-            UpdateUserBlanace::class
+            PaymentApprovedEmailListener::class,
+            UpdateUserBalanceListener::class
         ]
     ];
 

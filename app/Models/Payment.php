@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enum\Payment\PaymentStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,21 +15,13 @@ class Payment extends Model
 
     protected $guarded = ['id'];
 
-    /**
-     * @throws \Exception
-     */
-    public static function generateUniqueNumber($length = 20): int
+    protected $casts = [
+        'status' => PaymentStatus::class,
+    ];
+
+    public function getRouteKey(): string
     {
-        $uniqueNumber = str_shuffle(time() . random_int(111111111 , 999999999));
-
-        $randomDigitNumber = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomDigit = substr($uniqueNumber, rand(0, strlen($uniqueNumber) - 1), 1);
-            $randomDigitNumber .= $randomDigit;
-        }
-
-
-        return $randomDigitNumber;
+        return 'unique_id';
     }
 
     /**
@@ -43,11 +37,44 @@ class Payment extends Model
     protected static function booted()
     {
         static::creating(function ($payment) {
-            $payment->unique_id = static::generateUniqueNumber(10);
+            $payment->unique_id = generateUniqueNumber(10);
         });
     }
 
-    public function user(): BelongsTo{
+    public function user(): BelongsTo
+    {
         return $this->belongsTo(User::class);
+    }
+
+
+    /**
+     * is popular
+     * @param Builder $query
+     * @return void
+     */
+    public function scopeIsPending(Builder $query): void
+    {
+        $query->where('status', PaymentStatus::PENDING->value);
+    }
+
+    /**
+     * is approved
+     * @param Builder $query
+     * @return void
+     */
+    public function scopeIsApproved(Builder $query): void
+    {
+        $query->where('status', PaymentStatus::APPROVED->value);
+    }
+
+
+    /**
+     * is rejected
+     * @param Builder $query
+     * @return void
+     */
+    public function scopeIsRejected(Builder $query): void
+    {
+        $query->where('status', PaymentStatus::REJECTED->value);
     }
 }

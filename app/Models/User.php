@@ -55,7 +55,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return mixed
      */
-    public function getJWTIdentifier()
+    public function getJWTIdentifier(): mixed
     {
         return $this->getKey();
     }
@@ -65,7 +65,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return array
      */
-    public function getJWTCustomClaims()
+    public function getJWTCustomClaims(): array
     {
         return [];
     }
@@ -78,9 +78,9 @@ class User extends Authenticatable implements JWTSubject
     public function updateBalance(): Collection
     {
         $totalAmount = $this->transactions()
-            ->select('currency', DB::raw('SUM(amount) as total_amount'))
-            ->groupBy('currency')
-            ->pluck('total_amount', 'currency');
+            ->select('currency_key', DB::raw('SUM(amount) as total_amount'))
+            ->groupBy('currency_key')
+            ->pluck('total_amount', 'currency_key');
 
         $this->update([
             'balance' => json_encode($totalAmount->jsonSerialize())
@@ -90,12 +90,24 @@ class User extends Authenticatable implements JWTSubject
         return $totalAmount;
     }
 
+    /**
+     * getBalance
+     *
+     * @param Currency $currency
+     * @return int
+     */
     public function getBalance(Currency $currency): int
     {
-        $totalAmount = $this->transactions()
+        return $this->transactions()
             ->where('currency_key' , $currency->key)
             ->sum('amount');
+    }
 
-        return $totalAmount;
+    /**
+     * @return HasMany
+     */
+    public function cureencies(): HasMany
+    {
+        return $this->hasMany(Currency::class);
     }
 }

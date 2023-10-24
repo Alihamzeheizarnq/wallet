@@ -2,82 +2,101 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enum\Payment\Status;
+use App\Enum\Payment\PaymentStatus;
 use App\Events\PaymentApprovedEvent;
 use App\Events\PaymentRejectedEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentRequest;
 use App\Http\Resources\PaymentCollection;
 use App\Http\Resources\PaymentResource;
-use App\Mail\notifyRejectedPayment;
 use App\Models\Payment;
-use App\Models\Transaction;
-use App\Models\User;
-use App\Traits\ApiResponse;
-use Illuminate\Contracts\Support\ValidatedData;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class PaymentController extends Controller
 {
-    use ApiResponse;
-
+    /**
+     * index
+     *
+     * @return JsonResponse
+     */
     public function index(): JsonResponse
     {
         $payments = Payment::latest()->paginate(20);
 
-        return $this->successResponse(
-            new PaymentCollection($payments),
-            __('payment.messages.payment_list_found_successfully')
-        );
+        return apiResponse()
+            ->data(new PaymentCollection($payments))
+            ->message(__('payment.messages.payment_list_found_successfully'))
+            ->send();
     }
 
+    /**
+     * store
+     *
+     * @param PaymentRequest $request
+     * @return JsonResponse
+     */
     public function store(PaymentRequest $request): JsonResponse
     {
-        //TODO check the payment
+        $hasPayment = $request->user()
+            ->payments()
+            ->whereDate('created_at', '>', now()->subMinutes(5))
+            ->exists();
+
+        if ($hasPayment) {
+            throw new BadRequestException('There is s a error');
+        }
+
         $payment = Payment::create([
             'user_id' => auth()->user()->id,
             'amount' => $request->amount,
-            'currency_key' => $request->currency_key
+            'currency_key' => $request->currency_key,
         ]);
 
-        return $this->successResponse(
-            $payment,
-            __('payment.messages.payment_successfully_created')
-        );
+        return apiResponse()
+            ->data($payment)
+            ->message(__('payment.messages.payment_successfully_created'))
+            ->send();
     }
 
+    /**
+     * show
+     *
+     * @param Payment $payment
+     * @return JsonResponse
+     */
     public function show(Payment $payment): JsonResponse
     {
-        return $this->successResponse(
-            new PaymentResource($payment),
-            __('payment.messages.payment_successfully_found')
-        );
+        return apiResponse()
+            ->data(new PaymentResource($payment))
+            ->message(__('payment.messages.payment_successfully_found'))
+            ->send();
     }
 
+    /**
+     * reject
+     *
+     * @param Payment $payment
+     * @return JsonResponse
+     */
     public function reject(Payment $payment): JsonResponse
     {
-
-        //TODO check only being pendding
-        if ($payment->status === Status::APPROVED->value) {
-            //TODO read from trans
-            throw new BadRequestException('this payment has already approved before');
-        }
-
-        if ($payment->status === Status::REJECTED->value) {
-            //TODO read from trans
-            throw new BadRequestException('this payment has already rejected before');
+        if ($payment->status !== PaymentStatus::PENDING) {
+            throw new BadRequestException('Payment status should be pending');
         }
 
         $payment->update([
-            'status' => Status::REJECTED->value
+            'status' => PaymentStatus::REJECTED->value,
+            'status_updated_by' => auth()->user()->id,
+            'status_updated_at' => now(),
         ]);
 
         PaymentRejectedEvent::dispatch($payment);
 
-        return $this->successResponse($payment);
+        return apiResponse()
+            ->data($payment)
+            ->send();
     }
 
     /**
@@ -86,37 +105,33 @@ class PaymentController extends Controller
      * @param Payment $payment
      * @return JsonResponse
      */
-    public function approved(Payment $payment): JsonResponse
+    public function approve(Payment $payment): JsonResponse
     {
-        if ($payment->status !== Status::PENDING->value) {
-            throw new BadRequestException('Payment status should be pending');
-        }
-
-        //TODO read the text from lang file
-        if ($payment->transaction()->exists()) {
-            throw new BadRequestException('There is a transaction for this payment');
-        }
-
         DB::beginTransaction();
-        //TODO rename Status enum to Payment/PaymentStatusEnum
         $payment->update([
-            'status' => Status::APPROVED->value
+            'status' => PaymentStatus::APPROVED,
+            'status_updated_by' => auth()->user()->id,
+            'status_updated_at' => now(),
         ]);
 
-        $amount = Transaction::where('user_id', auth()->user()->id)
+        $balance = auth()->user()
+                ->transactions()
+                ->where('currency_key', $payment->currency_key)
                 ->sum('amount') + $payment->amount;
 
         $payment->transaction()->create([
             'user_id' => auth()->user()->id,
             'amount' => $payment->amount,
             'currency_key' => $payment->currency_key,
-            'balance' => $amount,
+            'balance' => $balance,
         ]);
 
         DB::commit();
 
         PaymentApprovedEvent::dispatch($payment);
 
-        return $this->successResponse($payment);
+        return apiResponse()
+            ->data($payment)
+            ->send();
     }
 }
