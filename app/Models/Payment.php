@@ -20,7 +20,7 @@ class Payment extends Model
         'status' => PaymentStatus::class,
     ];
 
-    public function getRouteKey(): string
+    public function getRouteKeyName(): string
     {
         return 'unique_id';
     }

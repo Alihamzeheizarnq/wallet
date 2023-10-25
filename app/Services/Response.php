@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class Response
 {
-    private array $data = [];
+    private array|Collection|ResourceCollection|JsonResource|Model $data = [];
     private array $errors = [];
     private string $messages = '';
 
