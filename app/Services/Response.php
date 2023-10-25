@@ -11,17 +11,17 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class Response
 {
-    private array|Collection|ResourceCollection|JsonResource|Model $data = [];
+    private mixed $data = [];
     private array $errors = [];
     private string $messages = '';
 
     /**
      * message
      *
-     * @param array|Collection|ResourceCollection|JsonResource|Model $data
+     * @param mixed $data
      * @return Response
      */
-    public function data(array|Collection|ResourceCollection|JsonResource|Model $data): Response
+    public function data(mixed $data): Response
     {
         $this->data = $data;
 

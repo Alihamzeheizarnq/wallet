@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Events\CurrencyActivatedEvent;
 use App\Events\CurrencyDeactivatedEvent;
@@ -61,7 +61,7 @@ class CurrencyController extends Controller
      */
     public function activate(Currency $currency): JsonResponse
     {
-        if ($currency->is_active){
+        if ($currency->is_active) {
             throw new BadRequestException('it is active');
         }
 
@@ -85,7 +85,7 @@ class CurrencyController extends Controller
      */
     public function deactivate(Currency $currency): JsonResponse
     {
-        if (!$currency->is_active){
+        if (!$currency->is_active) {
             throw new BadRequestException('it is deactivate');
         }
 

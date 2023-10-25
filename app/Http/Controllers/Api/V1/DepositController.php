@@ -1,20 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DepositRequest;
 use App\Models\Currency;
 use App\Models\User;
-use App\Traits\ApiResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class DepositController extends Controller
 {
-    use ApiResponse;
-
-    public function deposit(DepositRequest $request)
+    /**
+     * deposit
+     *
+     * @param DepositRequest $request
+     * @return JsonResponse
+     */
+    public function deposit(DepositRequest $request): JsonResponse
     {
         DB::beginTransaction();
         $fromUser = User::where('id', $request->from)->first();
@@ -51,6 +55,7 @@ class DepositController extends Controller
 
         DB::commit();
 
-        return $this->successResponse();
+        return apiResponse()
+            ->send();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\SwaggerDocs\Api;
+namespace App\Http\SwaggerDocs\Api\V1;
 
 class PaymentControllerDoc
 {
