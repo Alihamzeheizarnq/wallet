@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\PaymentRejectedEvent;
+use App\Events\PaymentRejected;
 use App\Mail\notifyRejectedPayment;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,7 +22,7 @@ class RejectedPaymentEmailListener implements ShouldQueue
     /**
      * Handle the event.
      */
-    public function handle(PaymentRejectedEvent $event): void
+    public function handle(PaymentRejected $event): void
     {
         Mail::to(
             User::find($event->payment->user_id)

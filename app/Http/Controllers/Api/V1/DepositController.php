@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Events\DepositOccurredEvent;
+use App\Events\DepositOccurred;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DepositRequest;
 use App\Models\Currency;
@@ -57,7 +57,7 @@ class DepositController extends Controller
 
         DB::commit();
 
-        DepositOccurredEvent::dispatch($fromUser , $toUser);
+        DepositOccurred::dispatch($fromUser , $toUser);
 
         return apiResponse()
             ->send();

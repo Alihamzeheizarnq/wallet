@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Enum\Payment\PaymentStatus;
-use App\Events\PaymentApprovedEvent;
-use App\Events\PaymentDestroyedEvent;
-use App\Events\PaymentRejectedEvent;
-use App\Events\PaymentStoredEvent;
+use App\Events\PaymentApproved;
+use App\Events\PaymentDestroyed;
+use App\Events\PaymentRejected;
+use App\Events\PaymentStored;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePaymentRequest;
 use App\Http\Resources\PaymentCollection;
@@ -58,7 +58,7 @@ class PaymentController extends Controller
             'currency_key' => $request->currency_key,
         ]);
 
-        PaymentStoredEvent::dispatch($payment);
+        PaymentStored::dispatch($payment);
 
         return apiResponse()
             ->data($payment)
@@ -100,7 +100,7 @@ class PaymentController extends Controller
             'status_updated_at' => now(),
         ]);
 
-        PaymentRejectedEvent::dispatch($payment);
+        PaymentRejected::dispatch($payment);
 
         return apiResponse()
             ->data($payment)
@@ -137,7 +137,7 @@ class PaymentController extends Controller
 
         DB::commit();
 
-        PaymentApprovedEvent::dispatch($payment);
+        PaymentApproved::dispatch($payment);
 
         return apiResponse()
             ->data($payment)
@@ -161,7 +161,7 @@ class PaymentController extends Controller
 
         $payment->delete();
 
-        PaymentDestroyedEvent::dispatch($payment);
+        PaymentDestroyed::dispatch($payment);
 
         return apiResponse()
             ->message(__('payment.messages.the_payment_was_successfully_destroyed'))

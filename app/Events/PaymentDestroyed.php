@@ -8,7 +8,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PaymentRejectedEvent
+class PaymentDestroyed
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -17,6 +17,7 @@ class PaymentRejectedEvent
      */
     public function __construct(public Payment $payment)
     {
+        //
     }
 
     /**

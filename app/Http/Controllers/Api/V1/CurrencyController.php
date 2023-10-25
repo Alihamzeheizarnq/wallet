@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Events\CurrencyActivatedEvent;
-use App\Events\CurrencyDeactivatedEvent;
+use App\Events\CurrencyActivated;
+use App\Events\CurrencyDeactivated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCurrencyRequest;
 use App\Models\Currency;
@@ -71,7 +71,7 @@ class CurrencyController extends Controller
             'is_active' => true,
         ]);
 
-        CurrencyActivatedEvent::dispatch($currency);
+        CurrencyActivated::dispatch($currency);
 
         return apiResponse()
             ->data($currency)
@@ -97,7 +97,7 @@ class CurrencyController extends Controller
             'is_active' => false,
         ]);
 
-        CurrencyDeactivatedEvent::dispatch($currency);
+        CurrencyDeactivated::dispatch($currency);
 
         return apiResponse()
             ->data($currency)

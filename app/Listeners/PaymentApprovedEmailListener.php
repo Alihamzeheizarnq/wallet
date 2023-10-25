@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\PaymentApprovedEvent;
+use App\Events\PaymentApproved;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -19,7 +19,7 @@ class PaymentApprovedEmailListener
     /**
      * Handle the event.
      */
-    public function handle(PaymentApprovedEvent $event): void
+    public function handle(PaymentApproved $event): void
     {
         //
     }

@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Events\PaymentApprovedEvent;
-use App\Events\PaymentRejectedEvent;
+use App\Events\PaymentApproved;
+use App\Events\PaymentRejected;
 use App\Listeners\PaymentApprovedEmailListener;
 use App\Listeners\RejectedPaymentEmailListener;
 use App\Listeners\UpdateUserBalanceListener;
@@ -24,10 +24,10 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        PaymentRejectedEvent::class => [
+        PaymentRejected::class => [
             RejectedPaymentEmailListener::class
         ],
-        PaymentApprovedEvent::class => [
+        PaymentApproved::class => [
             PaymentApprovedEmailListener::class,
             UpdateUserBalanceListener::class
         ]
