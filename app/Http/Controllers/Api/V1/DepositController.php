@@ -28,7 +28,7 @@ class DepositController extends Controller
         $fromUser->transactions()->lockForUpdate();
         $toUser->transactions()->lockForUpdate();
 
-        $currency = Currency::where('key', $request->currency_key)->first();
+        $currency = Currency::whereKey($request->currency_key)->first();
 
         $balance = $fromUser->getBalance($currency);
 
