@@ -33,7 +33,9 @@ class DepositController extends Controller
         $balance = $fromUser->getBalance($currency);
 
         if ($request->amount > $balance) {
-            throw new BadRequestException('amount must be smaller than your balance');
+            throw new BadRequestException(
+                __('messages.errors.amount_should_be_smaller_then_balance')
+            );
         }
 
         $fromUser->transactions()->create([

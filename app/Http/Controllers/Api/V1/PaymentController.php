@@ -47,7 +47,9 @@ class PaymentController extends Controller
             ->exists();
 
         if ($hasPayment) {
-            throw new BadRequestException('There is s a error');
+            throw new BadRequestException(
+                __('payment.errors.time_limit_on_creating_payment', ['minutes' => 5])
+            );
         }
 
         $payment = Payment::create([
@@ -87,7 +89,9 @@ class PaymentController extends Controller
     public function reject(Payment $payment): JsonResponse
     {
         if ($payment->status !== PaymentStatus::PENDING) {
-            throw new BadRequestException('Payment status should be pending');
+            throw new BadRequestException(
+                __('payamnt.errors.you_can_only_decline_pending_payments')
+            );
         }
 
         $payment->update([
@@ -100,6 +104,7 @@ class PaymentController extends Controller
 
         return apiResponse()
             ->data($payment)
+            ->message(__('payment.messages.the_payment_was_successfully_rejected'))
             ->send();
     }
 
@@ -119,9 +124,9 @@ class PaymentController extends Controller
         ]);
 
         $balance = auth()->user()
-                ->transactions()
-                ->where('currency_key', $payment->currency_key)
-                ->sum('amount') + $payment->amount;
+            ->transactions()
+            ->where('currency_key', $payment->currency_key)
+            ->sum('amount') + $payment->amount;
 
         $payment->transaction()->create([
             'user_id' => auth()->user()->id,
@@ -136,6 +141,7 @@ class PaymentController extends Controller
 
         return apiResponse()
             ->data($payment)
+            ->message(__('payment.messages.the_payment_was_successfully_approved'))
             ->send();
     }
 
@@ -148,7 +154,9 @@ class PaymentController extends Controller
     public function destroy(Payment $payment): JsonResponse
     {
         if ($payment->status !== PaymentStatus::PENDING) {
-            throw new BadRequestException('payment request should be pending');
+            throw new BadRequestException(
+                __('payment.errors.you_can_only_destroy_pending_payments')
+            );
         }
 
         $payment->delete();
@@ -156,7 +164,7 @@ class PaymentController extends Controller
         PaymentDestroyedEvent::dispatch($payment);
 
         return apiResponse()
-            ->message('payment deleted successfully')
+            ->message(__('payment.messages.the_payment_was_successfully_destroyed'))
             ->send();
     }
 }

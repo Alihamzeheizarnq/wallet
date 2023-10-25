@@ -14,14 +14,9 @@ return [
     */
 
     "enums" => [],
-    "messages" => [
-        "payment_list_found_successfully" => "فهرست پرداخت ها با موفقیت پیدا شد",
-        "payment_successfully_created" => "پرداخت با موفقیت ایجاد شد",
-        "payment_successfully_found" => "پرداخت با موفقیت پیدا شد",
-        "the_payment_was_successfully_rejected" => "پرداخت با موفقیت رد شد"
-    ],
+    "messages" => [],
     "validations" => [],
     "errors" => [
-        "you_can_only_decline_pending_payments" => "شما فقط امکان رد پرداخت های در انتظار را دارید"
-    ],
+        "amount_should_be_smaller_then_balance" => "The transfer amount should be less than the wallet balance."
+    ],    
 ];

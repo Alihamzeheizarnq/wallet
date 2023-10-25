@@ -62,7 +62,9 @@ class CurrencyController extends Controller
     public function activate(Currency $currency): JsonResponse
     {
         if ($currency->is_active) {
-            throw new BadRequestException('it is active');
+            throw new BadRequestException(
+                __('currency.errors.the_onle_active_currencies_can_deactivate')
+            );
         }
 
         $currency->update([
@@ -73,7 +75,7 @@ class CurrencyController extends Controller
 
         return apiResponse()
             ->data($currency)
-            ->message(__('currency.messages.currency_successfully_found'))
+            ->message(__('currency.messages.the_currency_was_successfully_activated'))
             ->send();
     }
 
@@ -86,7 +88,9 @@ class CurrencyController extends Controller
     public function deactivate(Currency $currency): JsonResponse
     {
         if (!$currency->is_active) {
-            throw new BadRequestException('it is deactivate');
+            throw new BadRequestException(
+                __('currency.errors.the_onle_inactive_currencies_can_activate')
+            );
         }
 
         $currency->update([
@@ -97,7 +101,7 @@ class CurrencyController extends Controller
 
         return apiResponse()
             ->data($currency)
-            ->message(__('currency.messages.currency_successfully_found'))
+            ->message(__('currency.messages.the_currency_was_successfully_diactivated'))
             ->send();
     }
 }
