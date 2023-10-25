@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Events\DepositOccurredEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DepositRequest;
 use App\Models\Currency;
@@ -21,8 +22,8 @@ class DepositController extends Controller
     public function deposit(DepositRequest $request): JsonResponse
     {
         DB::beginTransaction();
-        $fromUser = User::where('id', $request->from)->first();
-        $toUser = User::where('id', $request->to)->first();
+        $fromUser = User::findOrFail($request->from);
+        $toUser = User::findOrFail($request->to);
 
         $fromUser->transactions()->lockForUpdate();
         $toUser->transactions()->lockForUpdate();
@@ -40,7 +41,6 @@ class DepositController extends Controller
             'amount' => $request->amount * -1,
             'currency_key' => $request->currency_id,
             'balance' => $request->amount,
-
         ]);
 
         $toUser->transactions()->create([
@@ -54,6 +54,8 @@ class DepositController extends Controller
         $toUser->updateBalance();
 
         DB::commit();
+
+        DepositOccurredEvent::dispatch($fromUser , $toUser);
 
         return apiResponse()
             ->send();
