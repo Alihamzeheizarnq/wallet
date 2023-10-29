@@ -10,8 +10,11 @@ return [
             'service' => App\Services\Rate\NavasanService::class,
             'cache_time' => env('NAVASAN_CASH_TIME', 3)
         ],
-        'irarz' => [
-            'api_key' => env('IRARZ_API_KEY', '')
+        'example' => [
+            'api_key' => env('EXAMPLE_API_KEY', ''),
+            'base_url' => env('EXAMPLE_BASE_URL', ''),
+            'service' => App\Services\Rate\ExampleRateService::class,
+            'cache_time' => env('EXAMPLE_CASH_TIME', 3)
         ],
     ],
 ];

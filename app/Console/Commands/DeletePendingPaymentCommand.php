@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\DeletePendingPayment;
 use App\Models\Payment;
 use Illuminate\Console\Command;
 
@@ -27,7 +28,9 @@ class DeletePendingPaymentCommand extends Command
     public function handle()
     {
         Payment::isPending()
-            ->whereDate('created_at', '>', now()->addDay()->toDateTimeString())
-            ->delete();
+            ->whereDate('created_at', '<', now()->addDay()->toDateTimeString())
+            ->chunk(100, function ($items) {
+                DeletePendingPayment::dispatch($items->pluck('id'));
+            });
     }
 }
