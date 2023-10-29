@@ -55,7 +55,7 @@ class CurrencySeeder extends Seeder
                 'user_id' => $user->id,
             ],
             [
-                'name' => 'United Arab Emirates Dirham',
+                'name' => 'United Arab Emirates Durham',
                 'key' => 'aed',
                 'abbr' => 'AED',
                 'symbol' => 'د.إ',

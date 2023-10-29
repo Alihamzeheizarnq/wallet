@@ -58,6 +58,7 @@ class PaymentController extends Controller
             'currency_key' => $request->currency_key,
         ]);
 
+        //TODO change name
         PaymentStored::dispatch($payment);
 
         return apiResponse()
@@ -90,7 +91,7 @@ class PaymentController extends Controller
     {
         if ($payment->status !== PaymentStatus::PENDING) {
             throw new BadRequestException(
-                __('payamnt.errors.you_can_only_decline_pending_payments')
+                __('payment.errors.you_can_only_decline_pending_payments')
             );
         }
 
