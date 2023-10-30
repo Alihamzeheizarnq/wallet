@@ -6,14 +6,13 @@ use App\Events\CurrencyActivated;
 use App\Events\CurrencyDeactivated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCurrencyRequest;
+use App\Http\Resources\CurrencyCollection;
 use App\Models\Currency;
-use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class CurrencyController extends Controller
 {
-    use ApiResponse;
 
     /**
      * index
@@ -22,10 +21,10 @@ class CurrencyController extends Controller
      */
     public function index(): JsonResponse
     {
-        $currencies = Currency::isActive()->latest()->paginate(20);
+        $currencies = Currency::isActive()->latest()->paginate(config('app.pre_page'));
 
         return apiResponse()
-            ->data($currencies)
+            ->data(new CurrencyCollection($currencies))
             ->message(__('currency.messages.currency_list_found_successfully'))
             ->send();
     }

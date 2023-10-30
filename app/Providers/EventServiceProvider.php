@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Events\PaymentApproved;
 use App\Events\PaymentRejected;
 use App\Listeners\PaymentApprovedEmailListener;
-use App\Listeners\RejectedPaymentEmailListener;
+use App\Listeners\PaymentRejectedEmailListener;
 use App\Listeners\UpdateUserBalanceListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -25,7 +25,7 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         PaymentRejected::class => [
-            RejectedPaymentEmailListener::class
+            PaymentRejectedEmailListener::class
         ],
         PaymentApproved::class => [
             PaymentApprovedEmailListener::class,

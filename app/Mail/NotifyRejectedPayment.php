@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class notifyRejectedPayment extends Mailable implements ShouldQueue
+class NotifyRejectedPayment extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -38,7 +38,7 @@ class notifyRejectedPayment extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.payments.rejectedPayment',
+            markdown: 'emails.payments.rejected-payment',
             with: [
                 'payment' => $this->payment
             ]

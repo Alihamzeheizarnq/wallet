@@ -6,7 +6,7 @@ use App\Enum\Payment\PaymentStatus;
 use App\Events\PaymentApproved;
 use App\Events\PaymentDestroyed;
 use App\Events\PaymentRejected;
-use App\Events\PaymentStored;
+use App\Events\PaymentCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePaymentRequest;
 use App\Http\Resources\PaymentCollection;
@@ -25,7 +25,7 @@ class PaymentController extends Controller
      */
     public function index(): JsonResponse
     {
-        $payments = Payment::latest()->paginate(20);
+        $payments = Payment::latest()->paginate(config('app.pre_page'));
 
         return apiResponse()
             ->data(new PaymentCollection($payments))
@@ -58,8 +58,7 @@ class PaymentController extends Controller
             'currency_key' => $request->currency_key,
         ]);
 
-        //TODO change name
-        PaymentStored::dispatch($payment);
+        PaymentCreated::dispatch($payment);
 
         return apiResponse()
             ->data($payment)
@@ -130,7 +129,7 @@ class PaymentController extends Controller
             ->sum('amount') + $payment->amount;
 
         $payment->transaction()->create([
-            'user_id' => auth()->user()->id,
+            'user_id' => $payment->user_id,
             'amount' => $payment->amount,
             'currency_key' => $payment->currency_key,
             'balance' => $balance,
