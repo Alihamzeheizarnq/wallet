@@ -67,7 +67,7 @@ class NavasanService implements RateInterface
             [
                 'name' => 'Iranian Rial',
                 'key' => 'irr',
-                'abbr' => 'IRR',
+                'iso_code' => 'IRR',
                 'symbol' => '﷼',
                 'user_id' => User::getSystemUser()->id
             ]
