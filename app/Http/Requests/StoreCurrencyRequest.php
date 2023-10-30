@@ -27,4 +27,9 @@ class StoreCurrencyRequest extends FormRequest
             'key' => ['required', 'string', 'unique:currencies'],
         ];
     }
+
+    public function method(): string
+    {
+        return 'POST';
+    }
 }

@@ -14,6 +14,9 @@ class Kernel extends ConsoleKernel
     {
          $schedule->command('app:delete-pending-payment')
              ->dailyAt('00:00');
+
+        $schedule->command('app:update-rate')
+            ->dailyAt('00:20');
     }
 
     /**

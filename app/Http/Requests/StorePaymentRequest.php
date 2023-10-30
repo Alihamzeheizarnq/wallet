@@ -28,4 +28,9 @@ class StorePaymentRequest extends FormRequest
             'currency_key' => ['required' , 'exists:currencies,key'],
         ];
     }
+
+    public function method(): string
+    {
+        return 'POST';
+    }
 }

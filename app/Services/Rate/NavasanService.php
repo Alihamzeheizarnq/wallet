@@ -4,6 +4,7 @@ namespace App\Services\Rate;
 
 use App\Contracts\RateInterface;
 use App\Models\Currency;
+use App\Models\User;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -19,7 +20,7 @@ class NavasanService implements RateInterface
         $this->request = Http::withUrlParameters([
             'endpoint' => $this->config->get('base_url'),
             'version' => 'latest',
-            'api_key' => $this->config->get('api_key')
+            'api_key' => $this->config->get('api_key'),
         ]);
     }
 
@@ -61,6 +62,17 @@ class NavasanService implements RateInterface
 
         $rates = [];
 
+        $irrCurrency = Currency::firstOrCreate(
+            ['key' => 'irr'],
+            [
+                'name' => 'Iranian Rial',
+                'key' => 'irr',
+                'abbr' => 'IRR',
+                'symbol' => '﷼',
+                'user_id' => User::getSystemUser()->id
+            ]
+        );
+
         foreach ($currencies as $currency) {
             $currencyData = $this->getData($currency->key);
 
@@ -68,12 +80,12 @@ class NavasanService implements RateInterface
                 continue;
             }
             $rates = [
-                ...$rates, [
+                ...$rates,
+                [
                     'currency_key' => $currency->key,
                     'rate' => $currencyData->get('value'),
-                    'rate_currency_key' => 'irr',
-                    'date' => $currencyData->get('date')
-                ]
+                    'rate_currency_key' => $irrCurrency->key,
+                ],
             ];
         }
 
