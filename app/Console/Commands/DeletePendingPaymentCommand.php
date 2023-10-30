@@ -28,7 +28,7 @@ class DeletePendingPaymentCommand extends Command
     public function handle()
     {
         Payment::isPending()
-            ->whereDate('created_at', '>', now()->subDay()->toDateTimeString())
+            ->whereDate('created_at', '<=', now()->subDay()->toDateTimeString())
             ->chunk(100, function ($items) {
                 DeletePendingPayment::dispatch($items->pluck('id'));
             });

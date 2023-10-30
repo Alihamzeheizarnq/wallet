@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enum\Approvals\CurrencyApproval;
 use App\Events\CurrencyActivated;
 use App\Events\CurrencyDeactivated;
 use App\Http\Controllers\Controller;
@@ -46,6 +47,11 @@ class CurrencyController extends Controller
                 'symbol' => $request->symbol,
             ]);
 
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($currency)
+            ->log(CurrencyApproval::CREATED->value);
+
         return apiResponse()
             ->data($currency)
             ->message(__('currency.messages.currency_successfully_created'))
@@ -72,6 +78,11 @@ class CurrencyController extends Controller
 
         CurrencyActivated::dispatch($currency);
 
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($currency)
+            ->log(CurrencyApproval::ACTIVATED->value);
+
         return apiResponse()
             ->data($currency)
             ->message(__('currency.messages.the_currency_was_successfully_activated'))
@@ -97,6 +108,11 @@ class CurrencyController extends Controller
         ]);
 
         CurrencyDeactivated::dispatch($currency);
+
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($currency)
+            ->log(CurrencyApproval::DEACTIVATED->value);
 
         return apiResponse()
             ->data($currency)

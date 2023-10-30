@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enum\Approvals\PaymentApproval;
 use App\Enum\Payment\PaymentStatus;
 use App\Events\PaymentApproved;
 use App\Events\PaymentDestroyed;
@@ -60,6 +61,11 @@ class PaymentController extends Controller
 
         PaymentCreated::dispatch($payment);
 
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($payment)
+            ->log(PaymentApproval::CREATED->value);
+
         return apiResponse()
             ->data($payment)
             ->message(__('payment.messages.payment_successfully_created'))
@@ -102,6 +108,11 @@ class PaymentController extends Controller
 
         PaymentRejected::dispatch($payment);
 
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($payment)
+            ->log(PaymentApproval::REJECTED->value);
+
         return apiResponse()
             ->data($payment)
             ->message(__('payment.messages.the_payment_was_successfully_rejected'))
@@ -139,6 +150,11 @@ class PaymentController extends Controller
 
         PaymentApproved::dispatch($payment);
 
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($payment)
+            ->log(PaymentApproval::APPROVED->value);
+
         return apiResponse()
             ->data($payment)
             ->message(__('payment.messages.the_payment_was_successfully_approved'))
@@ -162,6 +178,11 @@ class PaymentController extends Controller
         $payment->delete();
 
         PaymentDestroyed::dispatch($payment);
+
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($payment)
+            ->log(PaymentApproval::DELETED->value);
 
         return apiResponse()
             ->message(__('payment.messages.the_payment_was_successfully_destroyed'))
