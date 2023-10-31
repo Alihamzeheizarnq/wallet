@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Contracts\Api\V1\CurrencyControllerDoc;
 use App\Enum\Approvals\CurrencyApproval;
 use App\Events\CurrencyActivated;
 use App\Events\CurrencyDeactivated;
@@ -12,7 +13,7 @@ use App\Models\Currency;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-class CurrencyController extends Controller
+class CurrencyController extends Controller implements CurrencyControllerDoc
 {
 
     /**

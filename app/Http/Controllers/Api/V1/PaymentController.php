@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Contracts\Api\V1\PaymentControllerDoc;
 use App\Enum\Approvals\PaymentApproval;
 use App\Enum\Payment\PaymentStatus;
 use App\Events\PaymentApproved;
@@ -17,7 +18,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-class PaymentController extends Controller
+class PaymentController extends Controller implements PaymentControllerDoc
 {
     /**
      * index

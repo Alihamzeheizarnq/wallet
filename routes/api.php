@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group([
-    'prefix' => 'auth',
+    'prefix' => 'v1/auth',
 ], function ($router) {
     $router->post('login', [AuthController::class, 'login']);
     $router->post('register', [AuthController::class, 'register']);
@@ -30,6 +30,7 @@ Route::group([
 
 Route::group([
     'middleware' => ['auth'],
+    'prefix' => 'v1',
 ], function ($router) {
     $router->get('payments', [PaymentController::class, 'index']);
     $router->post('payments', [PaymentController::class, 'store']);

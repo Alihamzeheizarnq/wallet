@@ -6,7 +6,535 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/payments": {
+        "/api/v1/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login to get JWT token",
+                "operationId": "d441d59422ad81f2945fefb3f7acfcda",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "202": {
+                        "description": "Successful operation"
+                    },
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register a new user",
+                "operationId": "7abeb7cb80a14d0e33a6a46f5d6d9a37",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "202": {
+                        "description": "Successful operation"
+                    },
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/me": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Get current user details",
+                "operationId": "a7bf8a1ed1cb8987c67c348d7d2f0c51",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "202": {
+                        "description": "Successful operation"
+                    },
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/auth/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout the current user",
+                "operationId": "b16ee0aeb78af951f4282d9ebf0b0b8c",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "202": {
+                        "description": "Successful operation"
+                    },
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/auth/refresh": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Refresh JWT token",
+                "operationId": "743d656f8d8c70c150737040e210ee86",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "202": {
+                        "description": "Successful operation"
+                    },
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/currencies": {
+            "get": {
+                "tags": [
+                    "Currency"
+                ],
+                "summary": "summary",
+                "description": "get list of Currency",
+                "operationId": "getListCurrency",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "202": {
+                        "description": "Successful operation"
+                    },
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Currency"
+                ],
+                "summary": "currency",
+                "description": "store currency",
+                "operationId": "storeCurrency",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "amount",
+                                    "currency"
+                                ],
+                                "properties": {
+                                    "amount": {
+                                        "type": "text"
+                                    },
+                                    "currency": {
+                                        "type": "text"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "202": {
+                        "description": "Successful operation"
+                    },
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/currencies/{currency}/activate": {
+            "patch": {
+                "tags": [
+                    "Currency"
+                ],
+                "summary": "currency",
+                "description": "reject currency",
+                "operationId": "rejectCurrency",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "currency id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "202": {
+                        "description": "Successful operation"
+                    },
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/currencies/{currency}/deactivate ": {
+            "patch": {
+                "tags": [
+                    "Currency"
+                ],
+                "summary": "currency",
+                "description": "approved currency",
+                "operationId": "approvedCurrency",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "currency id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "202": {
+                        "description": "Successful operation"
+                    },
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/deposit ": {
+            "post": {
+                "tags": [
+                    "Deposit"
+                ],
+                "summary": "Deposit",
+                "operationId": "42925100740795a1c231d350866718dc",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "from",
+                                    "to",
+                                    "currency_key",
+                                    "amount"
+                                ],
+                                "properties": {
+                                    "from": {
+                                        "type": "integer",
+                                        "format": "from",
+                                        "example": "1"
+                                    },
+                                    "to": {
+                                        "type": "integer",
+                                        "format": "to",
+                                        "example": "2"
+                                    },
+                                    "currency_key": {
+                                        "type": "string",
+                                        "format": "currency_key",
+                                        "example": "usd"
+                                    },
+                                    "amount": {
+                                        "type": "integer",
+                                        "format": "to",
+                                        "example": "2000"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "202": {
+                        "description": "Successful operation"
+                    },
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/v1/payments": {
             "get": {
                 "tags": [
                     "Payment"
@@ -110,7 +638,7 @@
                 ]
             }
         },
-        "/api/payments/{id}": {
+        "/api/v1/payments/{payment} ": {
             "get": {
                 "tags": [
                     "Payment"
@@ -162,7 +690,59 @@
                 ]
             }
         },
-        "/api/payments/{id}/reject": {
+        "/api/v1/payments/{payment}": {
+            "delete": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "payment",
+                "description": "delete payment",
+                "operationId": "deletePayment",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "payment id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "202": {
+                        "description": "Successful operation"
+                    },
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/payments/{payment}/reject": {
             "patch": {
                 "tags": [
                     "Payment"
@@ -214,7 +794,7 @@
                 ]
             }
         },
-        "/api/payments/{id}/approved": {
+        "/api/v1/payments/{payment}/approve": {
             "patch": {
                 "tags": [
                     "Payment"

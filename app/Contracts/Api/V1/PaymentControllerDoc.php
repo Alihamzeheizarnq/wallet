@@ -2,14 +2,18 @@
 
 namespace App\Contracts\Api\V1;
 
+use App\Http\Requests\StorePaymentRequest;
+use App\Models\Payment;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
+
 interface PaymentControllerDoc
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      * @OA\Get(
-     *     path="/api/payments",
+     *     path="/api/v1/payments",
      *     operationId="getListPayment",
      *     tags={"Payment"},
      *     summary="summary",
@@ -26,15 +30,15 @@ interface PaymentControllerDoc
      *     @OA\Response(response=404,description="Resource Not Found")
      * )
      */
-    public function index();
-
+    public function index(): JsonResponse;
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Payment $payment
+     * @return JsonResponse
      * @OA\Get(
-     *     path="/api/payments/{id}",
+     *     path="/api/v1/payments/{payment} ",
      *     operationId="showPayment",
      *     tags={"Payment"},
      *     summary="payment",
@@ -60,15 +64,16 @@ interface PaymentControllerDoc
      *      @OA\Response(response=404,description="Resource Not Found")
      * )
      */
-    public function show();
+    public function show(Payment $payment): JsonResponse;
 
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param StorePaymentRequest $request
+     * @return JsonResponse
      * @OA\Post(
-     *     path="/api/payments",
+     *     path="/api/v1/payments",
      *     operationId="storePayment",
      *     tags={"Payment"},
      *     summary="payment",
@@ -97,18 +102,48 @@ interface PaymentControllerDoc
      *      @OA\Response(response=404,description="Resource Not Found")
      * )
      */
-    public function store();
-
-    public function update();
-
-    public function destroy();
+    public function store(StorePaymentRequest $request): JsonResponse;
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Payment $payment
+     * @return JsonResponse
+     * @OA\Delete(
+     *     path="/api/v1/payments/{payment}",
+     *     operationId="deletePayment",
+     *     tags={"Payment"},
+     *     summary="payment",
+     *     description="delete payment",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="payment id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      security={{"bearerAuth":{}}},
+     *      @OA\Response(response=200,description="Successful operation"),
+     *      @OA\Response(response=201,description="Successful operation"),
+     *      @OA\Response(response=202,description="Successful operation"),
+     *      @OA\Response(response=204,description="Successful operation"),
+     *      @OA\Response(response=400,description="Bad Request"),
+     *      @OA\Response(response=401,description="Unauthenticated"),
+     *      @OA\Response(response=403,description="Forbidden"),
+     *      @OA\Response(response=404,description="Resource Not Found")
+     * )
+     */
+    public function destroy(Payment $payment): JsonResponse;
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @param Payment $payment
+     * @return JsonResponse
      * @OA\Patch(
-     *     path="/api/payments/{id}/reject",
+     *     path="/api/v1/payments/{payment}/reject",
      *     operationId="rejectPayment",
      *     tags={"Payment"},
      *     summary="payment",
@@ -133,14 +168,15 @@ interface PaymentControllerDoc
      *      @OA\Response(response=404,description="Resource Not Found")
      * )
      */
-    public function reject();
+    public function reject(Payment $payment): JsonResponse;
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Payment $payment
+     * @return JsonResponse
      * @OA\Patch(
-     *     path="/api/payments/{id}/approved",
+     *     path="/api/v1/payments/{payment}/approve",
      *     operationId="approvedPayment",
      *     tags={"Payment"},
      *     summary="payment",
@@ -165,5 +201,5 @@ interface PaymentControllerDoc
      *      @OA\Response(response=404,description="Resource Not Found")
      * )
      */
-    public function approved();
+    public function approve(Payment $payment): JsonResponse;
 }

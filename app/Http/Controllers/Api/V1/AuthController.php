@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Contracts\Api\V1\AuthControllerDoc;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\UnauthorizedException;
 
-class AuthController extends Controller
+class AuthController extends Controller implements AuthControllerDoc
 {
     /**
      * Create a new AuthController instance.
@@ -30,7 +32,7 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
 
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            throw new UnauthorizedException();
         }
 
         return $this->respondWithToken($token);
@@ -85,7 +87,7 @@ class AuthController extends Controller
         auth()->logout();
 
         return apiResponse()
-            ->message('Successfully logged out')
+            ->message(__('auth.messages.successfully_logout'))
             ->send();
     }
 

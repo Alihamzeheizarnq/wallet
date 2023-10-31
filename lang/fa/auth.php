@@ -17,4 +17,14 @@ return [
     'password' => 'رمزعبور صحیح نیست',
     'throttle' => 'درخواست بیش از حد مجاز! لطفا بعد از :seconds ثانیه دوباره امتحان کنید',
 
+    "enums" => [],
+    "messages" => [
+        'successfully_logout' => 'خروج با موفقیت انجام شد',
+
+    ],
+    "validations" => [],
+    "errors" => [
+        'the_onle_active_currencies_can_deactivate' => "Only active currencies can be deactivated.",
+        'the_onle_inactive_currencies_can_activate' => "Only inactive currencies can be activated.",
+    ],
 ];
