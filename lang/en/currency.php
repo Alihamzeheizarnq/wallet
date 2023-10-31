@@ -1,9 +1,10 @@
 <?php
+
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Currency Language Lines
+    | Payment Language Lines
     |--------------------------------------------------------------------------
     |
     | The following language lines are the default lines which match reasons
@@ -11,14 +12,18 @@ return [
     | has failed, such as for an invalid token or invalid new password.
     |
     */
-
     "enums" => [],
     "messages" => [
-        "currency_list_found_successfully" => "Currency list found successfully",
-        "currency_successfully_created" => "Currency successfully created",
-        "currency_successfully_found" => "Currency successfully found",
-        "the_currency_was_successfully_rejected" => "The currency was successfully rejected"
+        "currency_list_found_successfully" => "لیست ارزها با موفقیت یافت شد",
+        "currency_successfully_created" => "ارز با موفقیت ایجاد شد",
+        "currency_successfully_found" => "ارز با موفقیت یافت شد",
+        "the_currency_was_successfully_diactivated" => "ارز با موفقیت غیرفعال شد",
+        "the_currency_was_successfully_activated" => "ارز با موفقیت فعال شد",
     ],
     "validations" => [],
-    "errors" => [],
+    "errors" => [
+        'the_onle_active_currencies_can_deactivate' => "تنها ارزهای فعال می‌توانند غیرفعال شوند.",
+        'the_onle_inactive_currencies_can_activate' => "تنها ارزهای غیرفعال می‌توانند فعال شوند.",
+    ],
+
 ];

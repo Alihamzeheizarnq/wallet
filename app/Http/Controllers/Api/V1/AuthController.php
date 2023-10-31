@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\UnauthorizedException;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class AuthController extends Controller implements AuthControllerDoc
 {
@@ -31,7 +33,7 @@ class AuthController extends Controller implements AuthControllerDoc
         $credentials = request(['email', 'password']);
 
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            throw new UnauthorizedException();
         }
 
         return $this->respondWithToken($token);
@@ -86,7 +88,7 @@ class AuthController extends Controller implements AuthControllerDoc
         auth()->logout();
 
         return apiResponse()
-            ->message('Successfully logged out')
+            ->message(__('auth.messages.successfully_logout'))
             ->send();
     }
 
