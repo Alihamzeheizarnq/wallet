@@ -2,18 +2,23 @@
 
 namespace App\Contracts\Api\V1;
 
+use App\Http\Requests\StoreCurrencyRequest;
+use App\Models\Currency;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
+
 interface CurrencyControllerDoc
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      * @OA\Get(
-     *     path="/api/payments",
-     *     operationId="getListPayment",
-     *     tags={"Payment"},
+     *     path="/api/v1/currencies",
+     *     operationId="getListCurrency",
+     *     tags={"Currency"},
      *     summary="summary",
-     *     description="get list of Payment",
+     *     description="get list of Currency",
      *
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(response=200,description="Successful operation"),
@@ -26,53 +31,18 @@ interface CurrencyControllerDoc
      *     @OA\Response(response=404,description="Resource Not Found")
      * )
      */
-    public function index();
-
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     * @OA\Get(
-     *     path="/api/payments/{id}",
-     *     operationId="showPayment",
-     *     tags={"Payment"},
-     *     summary="payment",
-     *     description="get payment info",
-     *      @OA\Parameter(
-     *          name="id",
-     *          description="payment id",
-     *          required=true,
-     *          in="path",
-     *          @OA\Schema(
-     *              type="integer"
-     *          )
-     *      ),
-     *
-     *      security={{"bearerAuth":{}}},
-     *      @OA\Response(response=200,description="Successful operation"),
-     *      @OA\Response(response=201,description="Successful operation"),
-     *      @OA\Response(response=202,description="Successful operation"),
-     *      @OA\Response(response=204,description="Successful operation"),
-     *      @OA\Response(response=400,description="Bad Request"),
-     *      @OA\Response(response=401,description="Unauthenticated"),
-     *      @OA\Response(response=403,description="Forbidden"),
-     *      @OA\Response(response=404,description="Resource Not Found")
-     * )
-     */
-    public function show();
-
+    public function index(): JsonResponse;
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      * @OA\Post(
-     *     path="/api/payments",
-     *     operationId="storePayment",
-     *     tags={"Payment"},
-     *     summary="payment",
-     *     description="store payment",
+     *     path="/api/v1/currencies",
+     *     operationId="storeCurrency",
+     *     tags={"Currency"},
+     *     summary="currency",
+     *     description="store currency",
      *     @OA\RequestBody(
      *         @OA\JsonContent(),
      *         @OA\MediaType(
@@ -97,23 +67,23 @@ interface CurrencyControllerDoc
      *      @OA\Response(response=404,description="Resource Not Found")
      * )
      */
-    public function store();
+    public function store(StoreCurrencyRequest $request): JsonResponse;
 
-    public function update();
-    public function destroy();
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Currency $currency
+     * @return JsonResponse
      * @OA\Patch(
-     *     path="/api/payments/{id}/reject",
-     *     operationId="rejectPayment",
-     *     tags={"Payment"},
-     *     summary="payment",
-     *     description="reject payment",
+     *     path="/api/v1/currencies/{currency}/activate",
+     *     operationId="rejectCurrency",
+     *     tags={"Currency"},
+     *     summary="currency",
+     *     description="reject currency",
      *      @OA\Parameter(
      *          name="id",
-     *          description="payment id",
+     *          description="currency id",
      *          required=true,
      *          in="path",
      *          @OA\Schema(
@@ -131,21 +101,21 @@ interface CurrencyControllerDoc
      *      @OA\Response(response=404,description="Resource Not Found")
      * )
      */
-    public function reject();
+    public function activate(Currency $currency): JsonResponse;
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      * @OA\Patch(
-     *     path="/api/payments/{id}/approved",
-     *     operationId="approvedPayment",
-     *     tags={"Payment"},
-     *     summary="payment",
-     *     description="approved payment",
+     *     path="/api/v1/currencies/{currency}/deactivate ",
+     *     operationId="approvedCurrency",
+     *     tags={"Currency"},
+     *     summary="currency",
+     *     description="approved currency",
      *      @OA\Parameter(
      *          name="id",
-     *          description="payment id",
+     *          description="currency id",
      *          required=true,
      *          in="path",
      *          @OA\Schema(
@@ -163,5 +133,5 @@ interface CurrencyControllerDoc
      *      @OA\Response(response=404,description="Resource Not Found")
      * )
      */
-    public function approved();
+    public function deactivate(Currency $currency): JsonResponse;
 }

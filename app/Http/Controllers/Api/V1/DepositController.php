@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Contracts\Api\V1\DepositControllerDoc;
 use App\Events\DepositOccurred;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DepositRequest;
@@ -11,7 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-class DepositController extends Controller
+class DepositController extends Controller implements DepositControllerDoc
 {
     /**
      * deposit
