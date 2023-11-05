@@ -25,6 +25,7 @@ return [
     "validations" => [],
     "errors" => [
         "you_can_only_decline_pending_payments" => "شما فقط امکان رد پرداخت های در انتظار را دارید",
+        "you_can_only_approve_pending_payments" => "شما فقط امکان تایید پرداخت های در انتظار را دارید",
         "you_can_only_destroy_pending_payments" => "شما فقط امکان حذف پرداخت های در انتظار را دارید",
         "you_can_only_delete_pending_payments" => "شما فقط امکان حذف پرداخت های در انتظار را دارید",
         "time_limit_on_creating_payment" => "شما یک پرداخت در :minutes دقیقه اخیر داشتید. لطفا صبر کنید",

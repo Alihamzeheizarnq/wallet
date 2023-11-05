@@ -22,6 +22,7 @@ class StoreCurrencyRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name' => ['required', 'string', 'max:255'],
             'iso_code' => ['required', 'string', 'max:255'],
             'symbol' => ['required', 'string', 'max:255'],
             'key' => ['required', 'string', 'unique:currencies'],

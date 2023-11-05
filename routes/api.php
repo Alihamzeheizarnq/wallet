@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
     'prefix' => 'v1/auth',
+    'as' => 'api.'
 ], function ($router) {
     $router->post('login', [AuthController::class, 'login']);
     $router->post('register', [AuthController::class, 'register']);
@@ -31,17 +32,21 @@ Route::group([
 Route::group([
     'middleware' => ['auth'],
     'prefix' => 'v1',
+    'as' => 'api.'
 ], function ($router) {
-    $router->get('payments', [PaymentController::class, 'index']);
-    $router->post('payments', [PaymentController::class, 'store']);
-    $router->get('payments/{payment}', [PaymentController::class, 'show']);
-    $router->delete('payments/{payment}', [PaymentController::class, 'destroy']);
-    $router->patch('payments/{payment}/reject', [PaymentController::class, 'reject']);
-    $router->patch('payments/{payment}/approve', [PaymentController::class, 'approve']);
+    $router->get('payments', [PaymentController::class, 'index'])->name('payment.index');
+    $router->post('payments', [PaymentController::class, 'store'])->name('payment.store');
+    $router->get('payments/{payment}', [PaymentController::class, 'show'])->name('payment.show');
+    $router->delete('payments/{payment}', [PaymentController::class, 'destroy'])->name('payment.destroy');
+    $router->patch('payments/{payment}/reject', [PaymentController::class, 'reject'])->name('payment.reject');
+    $router->patch('payments/{payment}/approve', [PaymentController::class, 'approve'])->name('payment.approve');
 
     // currency routes
-    $router->patch('currencies/{currency}/deactivate', [CurrencyController::class, 'deactivate']);
-    $router->patch('currencies/{currency}/activate', [CurrencyController::class, 'activate']);
+    $router->patch('currencies/{currency}/deactivate', [CurrencyController::class, 'deactivate'])
+        ->name('currencies.deactivate');
+    $router->patch('currencies/{currency}/activate', [CurrencyController::class, 'activate'])
+        ->name('currencies.activate');
+
     $router->apiResource('currencies', CurrencyController::class);
 
     $router->post('deposit', [DepositController::class, 'deposit']);

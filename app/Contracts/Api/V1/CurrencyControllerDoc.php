@@ -12,7 +12,7 @@ interface CurrencyControllerDoc
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return JsonResponse
      * @OA\Get(
      *     path="/api/v1/currencies",
      *     operationId="getListCurrency",
@@ -22,9 +22,6 @@ interface CurrencyControllerDoc
      *
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(response=200,description="Successful operation"),
-     *     @OA\Response(response=201,description="Successful operation"),
-     *     @OA\Response(response=202,description="Successful operation"),
-     *     @OA\Response(response=204,description="Successful operation"),
      *     @OA\Response(response=400,description="Bad Request"),
      *     @OA\Response(response=401,description="Unauthenticated"),
      *     @OA\Response(response=403,description="Forbidden"),
@@ -36,7 +33,8 @@ interface CurrencyControllerDoc
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @param StoreCurrencyRequest $request
+     * @return JsonResponse
      * @OA\Post(
      *     path="/api/v1/currencies",
      *     operationId="storeCurrency",
@@ -49,18 +47,17 @@ interface CurrencyControllerDoc
      *            mediaType="multipart/form-data",
      *            @OA\Schema(
      *                  type="object",
-     *                  required={"amount","currency"},
-     *                  @OA\Property(property="amount", type="text"),
-     *                  @OA\Property(property="currency", type="text"),
+     *                  required={"iso_code","symbol","key"},
+     *                  @OA\Property(property="name", type="text"),
+     *                  @OA\Property(property="iso_code", type="text"),
+     *                  @OA\Property(property="symbol", type="text"),
+     *                  @OA\Property(property="key", type="text"),
      *            ),
      *        ),
      *    ),
      *
      *      security={{"bearerAuth":{}}},
-     *      @OA\Response(response=200,description="Successful operation"),
      *      @OA\Response(response=201,description="Successful operation"),
-     *      @OA\Response(response=202,description="Successful operation"),
-     *      @OA\Response(response=204,description="Successful operation"),
      *      @OA\Response(response=400,description="Bad Request"),
      *      @OA\Response(response=401,description="Unauthenticated"),
      *      @OA\Response(response=403,description="Forbidden"),
@@ -92,9 +89,6 @@ interface CurrencyControllerDoc
      *      ),
      *      security={{"bearerAuth":{}}},
      *      @OA\Response(response=200,description="Successful operation"),
-     *      @OA\Response(response=201,description="Successful operation"),
-     *      @OA\Response(response=202,description="Successful operation"),
-     *      @OA\Response(response=204,description="Successful operation"),
      *      @OA\Response(response=400,description="Bad Request"),
      *      @OA\Response(response=401,description="Unauthenticated"),
      *      @OA\Response(response=403,description="Forbidden"),

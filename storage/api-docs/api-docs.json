@@ -70,7 +70,8 @@
                                 "required": [
                                     "name",
                                     "email",
-                                    "password"
+                                    "password",
+                                    "password_confirmation"
                                 ],
                                 "properties": {
                                     "name": {
@@ -83,6 +84,11 @@
                                         "example": "user@example.com"
                                     },
                                     "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
                                         "type": "string",
                                         "format": "password",
                                         "example": "password123"
@@ -202,15 +208,6 @@
                     "200": {
                         "description": "Successful operation"
                     },
-                    "201": {
-                        "description": "Successful operation"
-                    },
-                    "202": {
-                        "description": "Successful operation"
-                    },
-                    "204": {
-                        "description": "Successful operation"
-                    },
                     "400": {
                         "description": "Bad Request"
                     },
@@ -242,14 +239,21 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "amount",
-                                    "currency"
+                                    "iso_code",
+                                    "symbol",
+                                    "key"
                                 ],
                                 "properties": {
-                                    "amount": {
+                                    "name": {
                                         "type": "text"
                                     },
-                                    "currency": {
+                                    "iso_code": {
+                                        "type": "text"
+                                    },
+                                    "symbol": {
+                                        "type": "text"
+                                    },
+                                    "key": {
                                         "type": "text"
                                     }
                                 },
@@ -262,16 +266,7 @@
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
                     "201": {
-                        "description": "Successful operation"
-                    },
-                    "202": {
-                        "description": "Successful operation"
-                    },
-                    "204": {
                         "description": "Successful operation"
                     },
                     "400": {

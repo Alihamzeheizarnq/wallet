@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use BadMethodCallException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -81,7 +82,7 @@ class Handler extends ExceptionHandler
             return apiResponse()
                 ->errors($errors)
                 ->message($exception->getMessage())
-                ->send(Response::HTTP_UNAUTHORIZED);
+                ->send(Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         if ($exception instanceof ClientException) {

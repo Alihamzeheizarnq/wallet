@@ -20,6 +20,10 @@ class Payment extends Model
         'status' => PaymentStatus::class,
     ];
 
+    protected $hidden = [
+        'id',
+    ];
+
     public function getRouteKeyName(): string
     {
         return 'unique_id';
@@ -77,5 +81,14 @@ class Payment extends Model
     public function scopeIsRejected(Builder $query): void
     {
         $query->where('status', PaymentStatus::REJECTED->value);
+    }
+
+    /**
+     * is rejected
+     * @return BelongsTo
+     */
+    public function currency(): BelongsTo
+    {
+        return $this->belongsTo(Currency::class , 'currency_key' , 'key');
     }
 }

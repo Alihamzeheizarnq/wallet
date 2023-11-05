@@ -15,6 +15,7 @@ use App\Http\Resources\PaymentCollection;
 use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
@@ -70,7 +71,7 @@ class PaymentController extends Controller implements PaymentControllerDoc
         return apiResponse()
             ->data($payment)
             ->message(__('payment.messages.payment_successfully_created'))
-            ->send();
+            ->send(Response::HTTP_CREATED);
     }
 
     /**
@@ -128,6 +129,12 @@ class PaymentController extends Controller implements PaymentControllerDoc
      */
     public function approve(Payment $payment): JsonResponse
     {
+        if ($payment->status !== PaymentStatus::PENDING) {
+            throw new BadRequestException(
+                __('payment.errors.you_can_only_approve_pending_payments')
+            );
+        }
+
         DB::beginTransaction();
         $payment->update([
             'status' => PaymentStatus::APPROVED,
