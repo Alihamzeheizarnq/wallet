@@ -24,7 +24,7 @@ Route::group([
     $router->post('register', [AuthController::class, 'register']);
     $router->post('logout', [AuthController::class, 'logout']);
     $router->post('refresh', [AuthController::class, 'refresh']);
-    $router->post('me', [AuthController::class, 'me']);
+    $router->get('me', [AuthController::class, 'me']);
 });
 
 

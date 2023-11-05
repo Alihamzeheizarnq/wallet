@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\ChangeAcceptJson;
 use App\Http\Middleware\ChangeLanguage;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -42,6 +43,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            ChangeAcceptJson::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],

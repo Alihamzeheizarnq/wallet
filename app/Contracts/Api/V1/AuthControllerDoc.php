@@ -23,12 +23,8 @@ interface AuthControllerDoc
      *         )
      *     ),
      *        @OA\Response(response=200,description="Successful operation"),
-     *        @OA\Response(response=201,description="Successful operation"),
-     *        @OA\Response(response=202,description="Successful operation"),
-     *        @OA\Response(response=204,description="Successful operation"),
      *        @OA\Response(response=400,description="Bad Request"),
      *        @OA\Response(response=401,description="Unauthenticated"),
-     *        @OA\Response(response=403,description="Forbidden"),
      *        @OA\Response(response=404,description="Resource Not Found")
      * )
      */
@@ -42,19 +38,15 @@ interface AuthControllerDoc
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"name", "email", "password"},
+     *             required={"name", "email", "password" , "password_confirmation"},
      *             @OA\Property(property="name", type="string", example="John Doe"),
      *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
      *             @OA\Property(property="password", type="string", format="password", example="password123")
+     *             @OA\Property(property="password_confirmation", type="string", format="password", example="password123")
      *         )
      *     ),
-     *         @OA\Response(response=200,description="Successful operation"),
      *         @OA\Response(response=201,description="Successful operation"),
-     *         @OA\Response(response=202,description="Successful operation"),
-     *         @OA\Response(response=204,description="Successful operation"),
      *         @OA\Response(response=400,description="Bad Request"),
-     *         @OA\Response(response=401,description="Unauthenticated"),
-     *         @OA\Response(response=403,description="Forbidden"),
      *         @OA\Response(response=404,description="Resource Not Found")
      *  )
      */
@@ -66,12 +58,8 @@ interface AuthControllerDoc
      *     summary="Get current user details",
      *     security={{ "bearerAuth": {} }},
      *          @OA\Response(response=200,description="Successful operation"),
-     *          @OA\Response(response=201,description="Successful operation"),
-     *          @OA\Response(response=202,description="Successful operation"),
-     *          @OA\Response(response=204,description="Successful operation"),
      *          @OA\Response(response=400,description="Bad Request"),
      *          @OA\Response(response=401,description="Unauthenticated"),
-     *          @OA\Response(response=403,description="Forbidden"),
      *          @OA\Response(response=404,description="Resource Not Found")
      *  )
      */
@@ -83,12 +71,8 @@ interface AuthControllerDoc
      *     summary="Logout the current user",
      *     security={{ "bearerAuth": {} }},
      *           @OA\Response(response=200,description="Successful operation"),
-     *           @OA\Response(response=201,description="Successful operation"),
-     *           @OA\Response(response=202,description="Successful operation"),
-     *           @OA\Response(response=204,description="Successful operation"),
      *           @OA\Response(response=400,description="Bad Request"),
      *           @OA\Response(response=401,description="Unauthenticated"),
-     *           @OA\Response(response=403,description="Forbidden"),
      *           @OA\Response(response=404,description="Resource Not Found")
      *   )
      */
@@ -101,12 +85,8 @@ interface AuthControllerDoc
      *     summary="Refresh JWT token",
      *     security={{ "bearerAuth": {} }},
      *            @OA\Response(response=200,description="Successful operation"),
-     *            @OA\Response(response=201,description="Successful operation"),
-     *            @OA\Response(response=202,description="Successful operation"),
-     *            @OA\Response(response=204,description="Successful operation"),
      *            @OA\Response(response=400,description="Bad Request"),
      *            @OA\Response(response=401,description="Unauthenticated"),
-     *            @OA\Response(response=403,description="Forbidden"),
      *            @OA\Response(response=404,description="Resource Not Found")
      * )
      */
