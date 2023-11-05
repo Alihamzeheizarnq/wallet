@@ -45,7 +45,7 @@ class PaymentController extends Controller implements PaymentControllerDoc
     {
         $hasPayment = $request->user()
             ->payments()
-            ->whereDate('created_at', '>', now()->subMinutes(5))
+            ->whereDate('created_at', '<', now()->subMinutes(5))
             ->exists();
 
         if ($hasPayment) {
